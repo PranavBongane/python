@@ -1,0 +1,130 @@
+PS A:\python\Dayone> ls
+
+
+    Directory: A:\python\Dayone
+
+
+Mode                 LastWriteTime         Length Name     
+----                 -------------         ------ ----     
+d-----        20-07-2025     12:35                __pycache
+                                                  __       
+-a----        20-07-2025     12:32             61 chai.py  
+-a----        20-07-2025     12:35             77 hello_cha 
+                                                  i.py      
+
+
+PS A:\python\Dayone> python
+Python 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.      
+>>> 
+PS A:\python\Dayone> python
+Python 3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.      
+>>> print("chai")
+chai
+>>> chai*5
+Traceback (most recent call last):
+  File "<python-input-1>", line 1, in <module>
+    chai*5
+    ^^^^
+NameError: name 'chai' is not defined
+>>> "chai"*4
+'chaichaichaichai'
+>>> score=100
+>>> score
+100
+>>> tea
+Traceback (most recent call last):
+  File "<python-input-5>", line 1, in <module>
+    tea
+NameError: name 'tea' is not defined
+>>> 
+KeyboardInterrupt
+>>> import chai
+chai aur python
+black tea
+test imported finction
+>>> import os
+'chaichaichaichai'
+>>> score=100
+>>> score
+100
+>>> tea
+Traceback (most recent call last):
+  File "<python-input-5>", line 1, in <module>
+    tea
+NameError: name 'tea' is not defined
+>>> 
+KeyboardInterrupt
+>>> import chai
+chai aur python
+black tea
+test imported finction
+>>> import os
+  File "<python-input-5>", line 1, in <module>
+    tea
+NameError: name 'tea' is not defined
+>>> 
+KeyboardInterrupt
+>>> import chai
+chai aur python
+black tea
+test imported finction
+>>> import os
+>>> import chai
+chai aur python
+black tea
+test imported finction
+>>> import os
+black tea
+test imported finction
+>>> import os
+>>> import os
+>>> os.getcwd()
+'A:\\python\\Dayone'
+'A:\\python\\Dayone'
+>>> for c in "chai":
+>>> for c in "chai":
+...     print(c)
+...     print(c)
+... 
+c
+h
+h
+a
+a
+i
+>>> import sys
+>>> import sys
+>>> sys.platform
+'win32'
+>>> sys.platform
+'win32'
+>>> import hello
+Traceback (most recent call last):
+  File "<python-input-12>", line 1, in <module>
+    import hello
+ModuleNotFoundError: No module named 'hello' 
+>>> import hello
+Traceback (most recent call last):
+  File "<python-input-13>", line 1, in <module>
+    import hello
+ModuleNotFoundError: No module named 'hello' 
+>>> import hello_chai
+>>> import hello_chai
+>>> hello_chai.chai("test import in terminel\
+")
+test import in terminel
+>>> hello_chai.chai_one
+Traceback (most recent call last):
+  File "<python-input-17>", line 1, in <module>
+    hello_chai.chai_one
+AttributeError: module 'hello_chai' has no attribute 'chai_one'
+>>> from importlib import reload
+>>> reload(hello_chai)
+chai aur python
+black tea
+<module 'hello_chai' from 'A:\\python\\Dayone\\hello_chai.py'>
+>>> hello_chai.chai_one                      
+'lemon tea'
+>>> 
