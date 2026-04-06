@@ -81,7 +81,3 @@ Feel free to fork and improve this project!
 
 This project is open-source and free to use.
 
-
----
-
-When you’re ready, say **“next task chimni”** — we’ll level you up again 🔥
