@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Aur Django</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <h2>☕ ChaiAurDjango</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Welcome to Chai Aur Django ☕</h1>
+            <p>Build powerful web apps with style and simplicity.</p>
+            <button>Get Started</button>
+        </section>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Fast Development</h3>
+                <p>Django helps you build apps quickly.</p>
+            </div>
+            <div class="card">
+                <h3>Secure</h3>
+                <p>Built-in security features to protect your app.</p>
+            </div>
+            <div class="card">
+                <h3>Scalable</h3>
+                <p>Grow from small project to large systems.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ by Pranav</p>
+    </footer>
+
+</body>
+
+</html>

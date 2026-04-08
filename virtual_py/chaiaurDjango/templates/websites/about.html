@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Aur Django</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <h2>☕ ChaiAurDjango</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="about">
+            <h1>About Us</h1>
+            <p>
+                Chai Aur Django is a simple project to learn web development
+                with clean design and powerful backend.
+            </p>
+
+            <div class="about-box">
+                <h3>Our Mission</h3>
+                <p>Make learning Django fun and practical.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ by Pranav</p>
+    </footer>
+
+</body>
+
+</html>
