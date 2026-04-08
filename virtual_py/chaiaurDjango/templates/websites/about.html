@@ -1,25 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chai Aur Django</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
+{% block title %}
+About page
+{% endblock %}
 
-<body>
-
-    <nav>
-        <h2>☕ ChaiAurDjango</h2>
-        <div>
-            <a href="/">Home</a>
-            <a href="/about/">About</a>
-            <a href="/contact/">Contact</a>
-        </div>
-    </nav>
-
+{% block content %}
     <div class="container">
         <section class="about">
             <h1>About Us</h1>
@@ -34,11 +19,5 @@
             </div>
         </section>
     </div>
-
-    <footer>
-        <p>Made with ❤️ by Pranav</p>
-    </footer>
-
+{% endblock %}
 </body>
-
-</html>
