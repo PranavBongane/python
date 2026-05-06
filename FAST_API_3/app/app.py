@@ -1,35 +1,110 @@
-from fastapi import FastAPI, HTTPException
-from app.schemas import PostCreate
+from fastapi import FastAPI, HTTPException, File, UploadFile, Form, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from contextlib import asynccontextmanager
+from sqlalchemy import select
+from app.db import Post, create_tables, get_db
 
-app = FastAPI()
+import shutil
+import os
+import tempfile
+import requests
+import base64
 
-text_post ={1: {"id": 1, "title": "First Post", "content": "This is the content of the first post."},
-            2: {"id": 2, "title": "Second Post", "content": "This is the content of the second post."},
-            3: {"id": 3, "title": "Third Post", "content": "This is the content of the third post."},
-            4: {"id": 4, "title": "Fourth Post", "content": "This is the content of the fourth post."},
-            5: {"id": 5, "title": "Fifth Post", "content": "This is the content of the fifth post."},
-            6: {"id": 6, "title": "Sixth Post", "content": "This is the content of the sixth post."},
-            7: {"id": 7, "title": "Seventh Post", "content": "This is the content of the seventh post."},
-            8: {"id": 8, "title": "Eighth Post", "content": "This is the content of the eighth post."},
-            9: {"id": 9, "title": "Ninth Post", "content": "This is the content of the ninth post."},
-            10: {"id": 10, "title": "Tenth Post", "content": "This is the content of the tenth post."}}
 
-@app.get("/posts")
-def get_post(limit: int = None):
-    if limit is not None:
-        return list(text_post.values())[:limit]
-    return text_post
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()
+    yield
 
-@app.get("/posts/{id}")
-def get_post_by_id(id: int):
-    if id in text_post:
-        return text_post[id]
-    else:
-        raise HTTPException(status_code=404, detail="Post not found")
-    
-@app.post("/posts") 
-def create_post(post: PostCreate) -> PostCreate:
-    new_id = max(text_post.keys()) + 1
-    new_post = {"id": new_id, "title": post.title, "content": post.content}
-    text_post[new_id] = new_post
-    return new_post
+
+app = FastAPI(lifespan=lifespan)
+
+
+# 🔹 ImageKit Upload Function (REST API)
+def upload_to_imagekit(file_path, file_name):
+    url = "https://upload.imagekit.io/api/v1/files/upload"
+
+    with open(file_path, "rb") as f:
+        encoded_file = base64.b64encode(f.read()).decode()
+
+    payload = {
+        "file": encoded_file,
+        "fileName": file_name,
+        "useUniqueFileName": True,
+        "tags": ["backend-upload"]
+    }
+
+    private_key = os.getenv("IMAGEKIT_PRIVATE_KEY")
+    auth = base64.b64encode(f"{private_key}:".encode()).decode()
+
+    headers = {
+        "Authorization": f"Basic {auth}"
+    }
+
+    response = requests.post(url, data=payload, headers=headers)
+    return response.json()
+
+
+# 🔹 Upload API
+@app.post("/upload")
+async def upload(
+    file: UploadFile = File(...),
+    caption: str = Form(...),
+    session: AsyncSession = Depends(get_db)
+):
+    temp_file_path = None
+
+    try:
+        # create temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as temp_file:
+            temp_file_path = temp_file.name
+            shutil.copyfileobj(file.file, temp_file)
+
+        # upload to imagekit
+        upload_result = upload_to_imagekit(temp_file_path, file.filename)
+
+        # check upload success
+        if "url" not in upload_result:
+            raise Exception(f"Upload failed: {upload_result}")
+
+        # save to DB
+        post = Post(
+            caption=caption,
+            url=upload_result["url"],
+            file_type="video" if file.content_type.startswith("video/") else "image",
+            file_name=upload_result["name"]
+        )
+
+        session.add(post)
+        await session.commit()
+        await session.refresh(post)
+
+        return post
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        file.file.close()
+
+
+# 🔹 Feed API
+@app.get("/feed")
+async def get_feed(session: AsyncSession = Depends(get_db)):
+    result = await session.execute(select(Post).order_by(Post.created_at.desc()))
+    posts = [row[0] for row in result.all()]
+
+    post_data = []
+    for post in posts:
+        post_data.append({
+            "id": str(post.id),
+            "caption": post.caption,
+            "url": post.url,
+            "file_type": post.file_type,
+            "file_name": post.file_name,
+            "created_at": post.created_at.isoformat()
+        })
+
+    return {"posts": post_data}
